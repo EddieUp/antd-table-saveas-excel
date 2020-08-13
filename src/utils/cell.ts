@@ -9,6 +9,8 @@ function drawCell(cell: Cell, props: ICellProps, config: ITbodyConfig = {}, isTh
     const num = Number(value);
     if (!isNaN(num)) {
       cell.value = num;
+    } else {
+      cell.value = value;
     }
   } else {
     cell.value = value;
