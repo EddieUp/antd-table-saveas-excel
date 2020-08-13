@@ -17,8 +17,6 @@ export function fillAndDrawTbody(sheet: Sheet, dataSource: IDataSource[], allCol
         value = children;
         hMerge = colSpan;
         vMerge = rowSpan;
-        console.log(renderValue);
-        console.log(children, colSpan, rowSpan);
       }
       drawCell(cell, {
         value,
@@ -32,9 +30,7 @@ export function fillAndDrawTbody(sheet: Sheet, dataSource: IDataSource[], allCol
           // 允许每一行数据带上样式
           ...(data.__style__ || {}),
         }
-      })
-      // render
-      // 合并单元格 value定义 百分比 样式
+      }, config)
     }
   })
 }
