@@ -10,4 +10,7 @@ export default defineConfig({
   styles: [
     'https://asset-imeete.oss-cn-hangzhou.aliyuncs.com//50048.fvpkfnangd/an/202007/image/antd.min.css',
   ],
+  base: '/antd-table-saveas-excel',
+  publicPath: '/antd-table-saveas-excel/',
+  exportStatic: {}, // 将所有路由输出为 HTML 目录结构，以免刷新页面时 404
 });
