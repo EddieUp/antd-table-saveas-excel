@@ -10,7 +10,15 @@ function drawCell(cell: Cell, props: ICellProps, config: ITbodyConfig = {}, isTh
     if (!isNaN(num)) {
       cell.value = num;
     } else {
-      cell.value = value;
+      // 可能是千分位
+      const num = String(value).replaceAll(',', '');
+      const isThousand = !isNaN(Number(num));
+      if (isThousand) {
+        cell.value = Number(num);
+        cell.numFmt = thousandToNumFmt(num);
+      } else {
+        cell.value = value;
+      }
     }
   } else {
     cell.value = value;
@@ -44,6 +52,27 @@ function drawCell(cell: Cell, props: ICellProps, config: ITbodyConfig = {}, isTh
     style.v = 'center';
   }
   setStyle(cell, style);
+}
+
+
+function getDecimal(data: string | number) {
+  const str = String(data);
+  const pointIndex = str.indexOf('.');
+  if (pointIndex === -1) return 0;
+  const decimalPart = str.slice(pointIndex + 1);
+  return decimalPart.length;
+}
+
+function thousandToNumFmt(data: string | number) {
+  const decimal = getDecimal(data);
+  const numFmts: ['#,##0', '#,##0.0', '#,##0.00', '#,##0.000', '#,##0.0000'] = [
+    '#,##0'
+    , '#,##0.0'
+    , '#,##0.00'
+    , '#,##0.000'
+    , '#,##0.0000'
+  ]
+  return numFmts[decimal] || numFmts[4];
 }
 
 export default drawCell;
