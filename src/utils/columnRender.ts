@@ -10,7 +10,7 @@ function getColumnRenderValue(data: any) {
   }
   // 单纯的react节点
   if (data.$$typeof) {
-    o.children = data.props?.children;
+    o.children = getLastChildren(data);
   }
   // 混合react节点和属性
   if (data.children) {
@@ -31,6 +31,14 @@ function getColumnRenderValue(data: any) {
     }
   }
   return o;
+}
+
+function getLastChildren(data: any): string {
+  const props = data.props;
+  if (props.children && typeof props.children === 'object') {
+    return getLastChildren(props.children);
+  }
+  return props?.children;
 }
 
 export default getColumnRenderValue;
