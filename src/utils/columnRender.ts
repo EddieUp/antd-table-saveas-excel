@@ -8,6 +8,10 @@ function getColumnRenderValue(data: any) {
     colSpan: 0,
     rowSpan: 0
   }
+  if (typeof data !== 'object') {
+    o.children = data;
+    return o;
+  }
   // 单纯的react节点
   if (data.$$typeof) {
     o.children = getLastChildren(data);
