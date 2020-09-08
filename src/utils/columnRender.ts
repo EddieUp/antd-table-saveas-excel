@@ -27,10 +27,10 @@ function getColumnRenderValue(data: any) {
   if (data.props) {
     o.colSpan = data.props?.colSpan || 0;
     o.rowSpan = data.props?.rowSpan || 0;
-    if (o.colSpan > 1) {
+    if (o.colSpan >= 1) {
       o.colSpan -= 1;
     }
-    if (o.rowSpan > 1) {
+    if (o.rowSpan >= 1) {
       o.rowSpan -= 1;
     }
   }
