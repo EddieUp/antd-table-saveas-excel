@@ -1,8 +1,21 @@
 import { Cell } from 'better-xlsx';
 import setStyle from './style';
 
-function drawCell(cell: Cell, props: ICellProps, config: ITbodyConfig = {}, isThead: boolean = false) {
-  const { value, hMerge = 0, vMerge = 0, numFmt, formula, cellType, style = {} } = props;
+function drawCell(
+  cell: Cell,
+  props: ICellProps,
+  config: ITbodyConfig = {},
+  isThead: boolean = false,
+) {
+  const {
+    value,
+    hMerge = 0,
+    vMerge = 0,
+    numFmt,
+    formula,
+    cellType,
+    style = {},
+  } = props;
   const { str2num } = config;
   // 尝试将值转化为数字
   if (str2num) {
@@ -23,15 +36,21 @@ function drawCell(cell: Cell, props: ICellProps, config: ITbodyConfig = {}, isTh
   } else {
     cell.value = value;
   }
+  if (String(value).endsWith('%')) {
+    // 是一个百分比
+    const num = parseFloat(String(value));
+    cell.value = Number(num) / 100;
+    cell.numFmt = percentToNumFmt(num);
+  }
   // 声明了公式
   if (formula) {
-    cell.setFormula(formula)
+    cell.setFormula(formula);
     return;
   }
   // 指定了单元格类型
   if (cellType) {
     if (cellType === 'TypeDate') {
-      cell.setDate(new Date(value))
+      cell.setDate(new Date(value));
     } else {
       cell.cellType = cellType;
     }
@@ -54,7 +73,6 @@ function drawCell(cell: Cell, props: ICellProps, config: ITbodyConfig = {}, isTh
   setStyle(cell, style);
 }
 
-
 function getDecimal(data: string | number) {
   const str = String(data);
   const pointIndex = str.indexOf('.');
@@ -66,13 +84,25 @@ function getDecimal(data: string | number) {
 function thousandToNumFmt(data: string | number) {
   const decimal = getDecimal(data);
   const numFmts: ['#,##0', '#,##0.0', '#,##0.00', '#,##0.000', '#,##0.0000'] = [
-    '#,##0'
-    , '#,##0.0'
-    , '#,##0.00'
-    , '#,##0.000'
-    , '#,##0.0000'
-  ]
+    '#,##0',
+    '#,##0.0',
+    '#,##0.00',
+    '#,##0.000',
+    '#,##0.0000',
+  ];
   return numFmts[decimal] || numFmts[4];
+}
+
+function percentToNumFmt(data: string | number) {
+  const decimal = getDecimal(data);
+  const numFmts: ['0%', '0.0%', '0.00%', '0.000%', '0.0000%'] = [
+    '0%',
+    '0.0%',
+    '0.00%',
+    '0.000%',
+    '0.0000%',
+  ];
+  return numFmts[decimal] || numFmts[2];
 }
 
 export default drawCell;
