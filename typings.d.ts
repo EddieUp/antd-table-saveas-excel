@@ -162,6 +162,7 @@ interface IExcelColumn {
   align?: 'left' | 'right' | 'center';
   colSpan?: number;
   render?: (text: any, record: any, index: number) => React.ReactNode | object;
+  excelRender?: (text: any, record: any, index: number) => React.ReactNode | object;
   __style__?: IStyle;
   __numFmt__?: INumFmt;
   __cellType__?: ICellType;
