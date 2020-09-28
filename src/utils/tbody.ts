@@ -11,8 +11,13 @@ export function fillAndDrawTbody(sheet: Sheet, dataSource: IDataSource[], allCol
       let value = data[dataIndex];
       const cell = row.addCell();
       let hMerge = 0, vMerge = 0;
-      if (column.render) {
-        const renderValue = column.render(value, data, index);
+      let renderValue = null
+      if (column.excelRender) {
+        renderValue = column.excelRender(value, data, index);
+      } else if (column.render) {
+        renderValue = column.render(value, data, index);
+      }
+      if (renderValue) {
         const { children, colSpan, rowSpan } = getColumnRenderValue(renderValue);
         value = children;
         hMerge = colSpan;
