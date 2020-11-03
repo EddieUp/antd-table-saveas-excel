@@ -1,6 +1,6 @@
 {
   "name": "antd-table-saveas-excel",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "scripts": {
     "start": "dumi dev",
     "docs:build": "dumi build",
@@ -42,10 +42,6 @@
     "prettier": "^1.19.1",
     "react": "^16.13.1",
     "yorkie": "^2.0.0"
-  },
-  "peerDependencies": {
-    "better-xlsx": ">=0.7.5",
-    "file-saver": ">=2.0.2"
   },
   "bugs": {
     "url": "https://github.com/EddieUp/antd-table-saveas-excel/issues"
