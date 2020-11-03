@@ -4,6 +4,11 @@
 
 ```ts
 interface IExcelColumn extends ColumnProps {
+  excelRender?: (
+    text: any,
+    record: any,
+    index: number,
+  ) => React.ReactNode | object;
   __style__?: IStyle;
   __numFmt__?: INumFmt;
   __cellType__?: ICellType;

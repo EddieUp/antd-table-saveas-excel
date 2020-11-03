@@ -2,6 +2,8 @@
 
 在`Antd Table Columns ColumnProps`的类型上，增加了如下属性:
 
+- excelRender: 自定义的 render，优先级比`render`高
+
 - \_\_style\_\_: [列样式](/3types#istyle)
 
 - \_\_numFmt\_\_: [列单元格格式](/3types#inumfmt)
