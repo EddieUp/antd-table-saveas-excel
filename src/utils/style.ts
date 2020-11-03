@@ -1,8 +1,17 @@
 import { Cell, Col } from 'better-xlsx';
+import {
+  IStyle,
+  IExcelColumn,
+  ITbodyConfig,
+  ICellProps,
+  IDataSource,
+  IHorizontal,
+  IVertical,
+  ICellType,
+  INumFmt,
+} from '../../app';
 
-const isMac = /macintosh|mac os x/i.test(
-  navigator.userAgent.toLowerCase(),
-)
+const isMac = /macintosh|mac os x/i.test(navigator.userAgent.toLowerCase());
 // 获取默认的字体
 function getDefaultFontName() {
   if (isMac) {
@@ -12,7 +21,7 @@ function getDefaultFontName() {
 }
 
 const STYLEMAP: {
-  [key in keyof IStyle]: (cell: Cell | Col, style: IStyle) => void
+  [key in keyof IStyle]: (cell: Cell | Col, style: IStyle) => void;
 } = {
   border: (cell: Cell | Col, style: IStyle = {}) => {
     const border = style.border;
@@ -109,7 +118,7 @@ const STYLEMAP: {
       cell.style.align.wrapText = wrapText;
     }
   },
-}
+};
 
 function setStyle(cell: Cell | Col, style: IStyle = {}) {
   const fontName = style.fontName;

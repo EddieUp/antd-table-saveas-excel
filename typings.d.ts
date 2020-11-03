@@ -162,7 +162,11 @@ interface IExcelColumn {
   align?: 'left' | 'right' | 'center';
   colSpan?: number;
   render?: (text: any, record: any, index: number) => React.ReactNode | object;
-  excelRender?: (text: any, record: any, index: number) => React.ReactNode | object;
+  excelRender?: (
+    text: any,
+    record: any,
+    index: number,
+  ) => React.ReactNode | object;
   __style__?: IStyle;
   __numFmt__?: INumFmt;
   __cellType__?: ICellType;
@@ -215,14 +219,16 @@ type IStyle = {
 };
 type IHorizontal = 'general' | 'center' | 'left' | 'right';
 type IVertical = 'general' | 'top' | 'bottom' | 'center';
-type ICellType = 'TypeString'
+type ICellType =
+  | 'TypeString'
   | 'TypeBool'
   | 'TypeNumeric'
   | 'TypeDate'
   | 'TypeFormula'
   | 'TypeError'
   | 'TypeGeneral';
-type INumFmt = 'general'
+type INumFmt =
+  | 'general'
   | '0'
   | '0.0'
   | '0.00'

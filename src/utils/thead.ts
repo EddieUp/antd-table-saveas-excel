@@ -3,6 +3,17 @@ import getDepth from './depth';
 import getWidth from './width';
 import drawCell from './cell';
 import drawCol from './col';
+import {
+  IStyle,
+  IExcelColumn,
+  ITbodyConfig,
+  ICellProps,
+  IDataSource,
+  IHorizontal,
+  IVertical,
+  ICellType,
+  INumFmt,
+} from '../../app';
 
 /**
  * 绘制出表头的行列
@@ -10,7 +21,11 @@ import drawCol from './col';
  * @param columns antd table columns props
  * @param depth 不用传入，深度
  */
-export function drawTheadSkeleton(sheet: Sheet, columns: IExcelColumn[], depth: number = 0) {
+export function drawTheadSkeleton(
+  sheet: Sheet,
+  columns: IExcelColumn[],
+  depth: number = 0,
+) {
   for (let i = 0; i < columns.length; i++) {
     const column = columns[i];
     const children = column.children;
@@ -94,16 +109,26 @@ function handleColumn(column: IExcelColumn, depth: number, startX: number) {
  * @param columns antd table columns props
  * @param depth 表头的行数
  */
-export function fillAndDrawThead(sheet: Sheet, columns: IExcelColumn[], style: ICellProps['style'], depth = 0) {
+export function fillAndDrawThead(
+  sheet: Sheet,
+  columns: IExcelColumn[],
+  style: ICellProps['style'],
+  depth = 0,
+) {
   for (let i = 0; i < columns.length; i++) {
     const column = columns[i];
     const cell = sheet.cell(depth, column.__x__ || 0);
-    drawCell(cell, {
-      value: column.title,
-      hMerge: column.__hMerge__ || 0,
-      vMerge: column.__vMerge__ || 0,
-      style: style
-    }, {}, true)
+    drawCell(
+      cell,
+      {
+        value: column.title,
+        hMerge: column.__hMerge__ || 0,
+        vMerge: column.__vMerge__ || 0,
+        style: style,
+      },
+      {},
+      true,
+    );
     if (column.children?.length) {
       fillAndDrawThead(sheet, column.children, style, depth + 1);
     }

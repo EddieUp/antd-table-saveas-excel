@@ -1,3 +1,14 @@
+import {
+  IStyle,
+  IExcelColumn,
+  ITbodyConfig,
+  ICellProps,
+  IDataSource,
+  IHorizontal,
+  IVertical,
+  ICellType,
+  INumFmt,
+} from '../../app';
 /**
  * 获取深度
  * @param column antd table columns props

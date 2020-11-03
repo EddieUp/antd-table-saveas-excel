@@ -1,5 +1,16 @@
 import { Cell } from 'better-xlsx';
 import setStyle from './style';
+import {
+  IStyle,
+  IExcelColumn,
+  ITbodyConfig,
+  ICellProps,
+  IDataSource,
+  IHorizontal,
+  IVertical,
+  ICellType,
+  INumFmt,
+} from '../../app';
 
 function drawCell(
   cell: Cell,

@@ -1,8 +1,24 @@
 import { File, Sheet } from 'better-xlsx';
-import { drawTheadSkeleton, fillAndDrawThead, handleColumns, drawTheadCell } from './utils/thead';
+import {
+  drawTheadSkeleton,
+  fillAndDrawThead,
+  handleColumns,
+  drawTheadCell,
+} from './utils/thead';
 import { fillAndDrawTbody, getColumns } from './utils/tbody';
 import setStyle from './utils/style';
 import { saveAs } from 'file-saver';
+import {
+  IStyle,
+  IExcelColumn,
+  ITbodyConfig,
+  ICellProps,
+  IDataSource,
+  IHorizontal,
+  IVertical,
+  ICellType,
+  INumFmt,
+} from '../app';
 
 export class Excel {
   file: File;
@@ -19,7 +35,7 @@ export class Excel {
   defaultTbodyCellStyle: IStyle = {
     v: 'bottom',
     wrapText: true,
-    fontSize: 12
+    fontSize: 12,
   };
   columns: IExcelColumn[] | undefined;
   constructor() {
@@ -39,10 +55,7 @@ export class Excel {
    * @param columns antd table columns
    * @param rowHeight 行高
    */
-  addColumns(
-    columns: IExcelColumn[],
-    rowHeight = 1,
-  ) {
+  addColumns(columns: IExcelColumn[], rowHeight = 1) {
     if (!this.sheet) return this;
     this.columns = columns;
     drawTheadSkeleton(this.sheet, columns);
@@ -54,13 +67,16 @@ export class Excel {
     for (let row of rows) {
       row.setHeightCM(rowHeight);
       // 如果需要设置边框颜色，需要对所有单元格进行设置，fillAndDrawThead会忽略掉合并项的设置
-      if (this.defaultTheadCellStyle?.border && this.defaultTheadCellStyle?.borderColor) {
+      if (
+        this.defaultTheadCellStyle?.border &&
+        this.defaultTheadCellStyle?.borderColor
+      ) {
         const cells = row.cells;
         for (let cell of cells) {
           setStyle(cell, {
             border: true,
-            borderColor: this.defaultTheadCellStyle.borderColor
-          })
+            borderColor: this.defaultTheadCellStyle.borderColor,
+          });
         }
       }
     }
@@ -74,7 +90,14 @@ export class Excel {
   addDataSource(dataSource: any[], config: ITbodyConfig = {}) {
     if (!this.sheet || !this.columns) return this;
     const allColumns = getColumns(this.columns);
-    fillAndDrawTbody(this.sheet, dataSource, allColumns, this.defaultTbodyCellStyle, 1, config);
+    fillAndDrawTbody(
+      this.sheet,
+      dataSource,
+      allColumns,
+      this.defaultTbodyCellStyle,
+      1,
+      config,
+    );
     return this;
   }
   /**
@@ -84,7 +107,7 @@ export class Excel {
   setTHeadStyle(style: IStyle) {
     this.defaultTheadCellStyle = {
       ...this.defaultTheadCellStyle,
-      ...style
+      ...style,
     };
     return this;
   }
@@ -95,7 +118,7 @@ export class Excel {
   setTBodyStyle(style: IStyle) {
     this.defaultTbodyCellStyle = {
       ...this.defaultTbodyCellStyle,
-      ...style
+      ...style,
     };
     return this;
   }
@@ -107,11 +130,14 @@ export class Excel {
   saveAs(name: string, type: 'blob' = 'blob') {
     if (!this.file) return;
     if (type === 'blob') {
-      this.file.saveAs(type, true).then((data) => {
-        saveAs(data, name);
-      }).catch(e => {
-        console.error(e);
-      });
+      this.file
+        .saveAs(type, true)
+        .then(data => {
+          saveAs(data, name);
+        })
+        .catch(e => {
+          console.error(e);
+        });
     }
   }
 }
