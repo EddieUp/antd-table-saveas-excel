@@ -1,8 +1,8 @@
 ## FAQ
 
-### 遇到找不到`better-xlsx`的生命文件
+### 找不到`better-xlsx`的声明文件
 
-请在项目中加入以下声明
+可以在项目中新建文件`better-xlsx.d.ts`，内容：
 
 ```ts
 declare module 'better-xlsx' {
