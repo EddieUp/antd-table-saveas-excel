@@ -48,10 +48,12 @@ function drawCell(
     cell.value = value;
   }
   if (String(value).endsWith('%')) {
-    // 是一个百分比
+    // 可以转化为百分比的话进行设置
     const num = parseFloat(String(value));
-    cell.value = Number(num) / 100;
-    cell.numFmt = percentToNumFmt(num);
+    if (!isNaN(num)) {
+      cell.value = Number(num) / 100;
+      cell.numFmt = percentToNumFmt(num);
+    }
   }
   // 声明了公式
   if (formula) {
