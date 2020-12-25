@@ -124,14 +124,15 @@ export class Excel {
   }
   /**
    * 另存为
-   * @param name
-   * @param type
+   * @param name 名称
+   * @param type 保存类型 'blob' | 'base64'
+   * @param compress 是否压缩 boolean
    */
-  saveAs(name: string, type: 'blob' = 'blob') {
+  saveAs(name: string, type: 'blob' = 'blob', compress: boolean = true) {
     if (!this.file) return;
     if (type === 'blob') {
       this.file
-        .saveAs(type, true)
+        .saveAs(type, compress)
         .then(data => {
           saveAs(data, name);
         })
