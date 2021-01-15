@@ -1,9 +1,25 @@
+import {
+  IStyle,
+  IExcelColumn,
+  ITbodyConfig,
+  ICellProps,
+  IDataSource,
+  IHorizontal,
+  IVertical,
+  ICellType,
+  INumFmt,
+} from '../../app';
 /**
  * 获取column render的结果的参数
  * @param data column render的结果
  */
 function getColumnRenderValue(data: any) {
-  let o = {
+  let o: {
+    children: string;
+    colSpan: number;
+    rowSpan: number;
+    __style__: IStyle;
+  } = {
     children: '',
     colSpan: 0,
     rowSpan: 0,
