@@ -53,7 +53,7 @@ export class Excel {
   /**
    * 添加表格配置
    * @param columns antd table columns
-   * @param rowHeight 行高
+   * @param rowHeight 行高(单位: CM)
    */
   addColumns(columns: IExcelColumn[], rowHeight = 1) {
     if (!this.sheet) return this;
@@ -86,8 +86,9 @@ export class Excel {
    * 添加数据
    * @param dataSource 数据
    * @param config 表格体配置
+   * @param rowHeight 行高(单位: CM)
    */
-  addDataSource(dataSource: any[], config: ITbodyConfig = {}) {
+  addDataSource(dataSource: any[], config: ITbodyConfig = {}, rowHeight = 1) {
     if (!this.sheet || !this.columns) return this;
     const allColumns = getColumns(this.columns);
     fillAndDrawTbody(
@@ -95,7 +96,7 @@ export class Excel {
       dataSource,
       allColumns,
       this.defaultTbodyCellStyle,
-      1,
+      rowHeight,
       config,
     );
     return this;
