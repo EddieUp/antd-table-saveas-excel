@@ -1,6 +1,6 @@
 {
   "name": "antd-table-saveas-excel",
-  "version": "1.0.12",
+  "version": "1.0.13",
   "scripts": {
     "start": "dumi dev",
     "docs:build": "dumi build",
@@ -15,9 +15,6 @@
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
   "typings": "dist/index.d.ts",
-  "gitHooks": {
-    "pre-commit": "lint-staged"
-  },
   "lint-staged": {
     "*.{js,jsx,less,md,json}": [
       "prettier --write"
