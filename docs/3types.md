@@ -42,6 +42,10 @@ interface ITbodyConfig {
 
 ```ts
 type IStyle = {
+  // 单位CM，CM和px的关系大概为 mac office 145px = 20cm（网上找的资料，请自行鉴定）
+  height?: number;
+  // 单位CM
+  width?: number;
   border?: boolean;
   borderColor?: string;
   background?: string;

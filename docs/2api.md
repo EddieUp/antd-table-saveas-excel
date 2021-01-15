@@ -45,6 +45,7 @@ excel.addColumns(
 
 - 数据
 - [表格体配置(可选)](/3types#itbodyconfig)
+- 行高(可选，单位 CM)
 
 ```js
 import { Excel } from 'antd-table-saveas-excel';
