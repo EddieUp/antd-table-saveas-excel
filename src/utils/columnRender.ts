@@ -51,9 +51,9 @@ function getChildren(data: IReactNode): string {
   if (typeof props.children === 'string') return props.children
   return props.children.reduce((prev, cur) => {
     if (typeof prev === 'string') {
-      return prev + getChildren(cur)
+      return prev + ' ' + getChildren(cur)
     }
-    return getChildren(prev) + getChildren(cur)
+    return getChildren(prev) + ' ' + getChildren(cur)
   }, '')
 }
 
