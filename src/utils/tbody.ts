@@ -31,18 +31,20 @@ export function fillAndDrawTbody(
       let hMerge = 0,
         vMerge = 0;
       let renderValue = null;
+      let cellStyle = {};
       if (column.excelRender) {
         renderValue = column.excelRender(value, data, index);
       } else if (column.render) {
         renderValue = column.render(value, data, index);
       }
       if (renderValue) {
-        const { children, colSpan, rowSpan } = getColumnRenderValue(
+        const { children, colSpan, rowSpan, __style__ } = getColumnRenderValue(
           renderValue,
         );
         value = children;
         hMerge = colSpan;
         vMerge = rowSpan;
+        cellStyle = __style__;
       }
       drawCell(
         cell,
@@ -57,6 +59,8 @@ export function fillAndDrawTbody(
             ...__style__,
             // 允许每一行数据带上样式
             ...(data.__style__ || {}),
+            // 允许单元格样式
+            ...cellStyle
           },
         },
         config,
