@@ -201,6 +201,8 @@ interface IDataSource extends Object {
   [key: string]: any;
 }
 type IStyle = {
+  height?: number;
+  width?: number;
   border?: boolean;
   borderColor?: string;
   background?: string;
