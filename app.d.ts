@@ -46,6 +46,7 @@ export interface IDataSource extends Object {
   [key: string]: any;
 }
 export type IStyle = {
+  width?: number;
   border?: boolean;
   borderColor?: string;
   background?: string;
