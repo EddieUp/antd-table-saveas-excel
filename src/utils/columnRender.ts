@@ -7,6 +7,7 @@ function getColumnRenderValue(data: any) {
     children: '',
     colSpan: 0,
     rowSpan: 0,
+    __style__: {}
   };
   if (typeof data !== 'object') {
     o.children = data;
@@ -14,12 +15,12 @@ function getColumnRenderValue(data: any) {
   }
   // 单纯的react节点
   if (data.$$typeof) {
-    o.children = getLastChildren(data);
+    o.children = getChildren(data);
   }
   // 混合react节点和属性
   if (data.children) {
     if (typeof data.children === 'object') {
-      o.children = data.children.props?.children;
+      o.children = getChildren(data.children);
     } else {
       o.children = data.children;
     }
@@ -34,20 +35,26 @@ function getColumnRenderValue(data: any) {
       o.rowSpan -= 1;
     }
   }
+  if (data.__style__) {
+    o.__style__ = data.__style__;
+  }
   return o;
 }
 
-function getLastChildren(data: any): string {
-  if (Array.isArray(data)) {
-    for (let item of data) {
-      return getLastChildren(item);
+interface IReactNode {
+  props: {
+    children: IReactNode[] | string;
+  }
+}
+function getChildren(data: IReactNode): string {
+  const { props } = data || {}
+  if (typeof props.children === 'string') return props.children
+  return props.children.reduce((prev, cur) => {
+    if (typeof prev === 'string') {
+      return prev + getChildren(cur)
     }
-  }
-  const props = data.props;
-  if (props?.children && typeof props.children === 'object') {
-    return getLastChildren(props.children);
-  }
-  return props?.children;
+    return getChildren(prev) + getChildren(cur)
+  }, '')
 }
 
 export default getColumnRenderValue;
