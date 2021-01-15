@@ -23,7 +23,12 @@ export function fillAndDrawTbody(
 ) {
   dataSource.forEach((data, index) => {
     const row = sheet.addRow();
-    row.setHeightCM(height);
+    const rowStyle = data.__style__ || {};
+    if (rowStyle.height) {
+      row.setHeightCM(rowStyle.height);
+    } else {
+      row.setHeightCM(height);
+    }
     for (let column of allColumns) {
       const { dataIndex, __cellType__, __numFmt__, __style__ = {} } = column;
       let value = data[dataIndex];
@@ -31,7 +36,7 @@ export function fillAndDrawTbody(
       let hMerge = 0,
         vMerge = 0;
       let renderValue = null;
-      let cellStyle = {};
+      let cellStyle: IStyle = {};
       if (column.excelRender) {
         renderValue = column.excelRender(value, data, index);
       } else if (column.render) {
@@ -45,6 +50,9 @@ export function fillAndDrawTbody(
         hMerge = colSpan;
         vMerge = rowSpan;
         cellStyle = __style__;
+        if (cellStyle && cellStyle.height) {
+          row.setHeightCM(cellStyle.height);
+        }
       }
       drawCell(
         cell,
@@ -58,7 +66,7 @@ export function fillAndDrawTbody(
             ...defaultStyle,
             ...__style__,
             // 允许每一行数据带上样式
-            ...(data.__style__ || {}),
+            ...rowStyle,
             // 允许单元格样式
             ...cellStyle
           },
