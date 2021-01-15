@@ -19,7 +19,7 @@ function drawCol(col: Col, props: IExcelColumn) {
     col.width = px2cm(width);
   }
   if (__style__.width) {
-    col.width = px2cm(__style__.width);
+    col.width = __style__.width;
   }
   if (__numFmt__) {
     col.numFmt = __numFmt__;
