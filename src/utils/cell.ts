@@ -67,7 +67,7 @@ function drawCell(
     } else {
       cell.cellType = cellType;
     }
-    return;
+    // return;
   }
   // 指定了单元格格式
   if (numFmt) {
