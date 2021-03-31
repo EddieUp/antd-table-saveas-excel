@@ -12,6 +12,7 @@ import {
   ICellType,
   INumFmt,
 } from '../../app';
+import getValueByStrPath from './getValueByStrPath';
 
 export function fillAndDrawTbody(
   sheet: Sheet,
@@ -31,7 +32,7 @@ export function fillAndDrawTbody(
     }
     for (let column of allColumns) {
       const { dataIndex, __cellType__, __numFmt__, __style__ = {} } = column;
-      let value = data[dataIndex];
+      let value = getValueByStrPath(data, dataIndex);
       const cell = row.addCell();
       let hMerge = 0,
         vMerge = 0;
