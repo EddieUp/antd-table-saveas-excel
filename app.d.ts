@@ -1,7 +1,7 @@
 // 表格列属性
 export interface IExcelColumn {
   title: string;
-  dataIndex: string;
+  dataIndex: string | string[];
   width?: number;
   children?: IExcelColumn[];
   align?: 'left' | 'right' | 'center';
