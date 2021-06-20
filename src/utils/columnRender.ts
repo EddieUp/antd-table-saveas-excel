@@ -1,13 +1,5 @@
 import {
   IStyle,
-  IExcelColumn,
-  ITbodyConfig,
-  ICellProps,
-  IDataSource,
-  IHorizontal,
-  IVertical,
-  ICellType,
-  INumFmt,
 } from '../../app';
 /**
  * 获取column render的结果的参数
