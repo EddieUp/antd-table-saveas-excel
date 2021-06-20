@@ -1,28 +1,29 @@
 import { File, Sheet } from 'better-xlsx';
 import {
-  drawTheadSkeleton,
-  fillAndDrawThead,
-  handleColumns,
-  drawTheadCell,
+  renderThead
 } from './utils/thead';
-import { fillAndDrawTbody, getColumns } from './utils/tbody';
-import setStyle from './utils/style';
+import { renderTbody } from './utils/tbody';
 import { saveAs } from 'file-saver';
 import {
   IStyle,
   IExcelColumn,
   ITbodyConfig,
-  ICellProps,
-  IDataSource,
-  IHorizontal,
-  IVertical,
-  ICellType,
-  INumFmt,
 } from '../app';
+import { addRow } from './utils/row';
+import { addCol } from './utils/col';
+import {
+  getColumnsMaxDepth,
+  getColumnsMaxLength,
+  flatColumns
+} from './utils/columns';
+import px2cm from './utils/px2cm';
 
 export class Excel {
   file: File;
   sheet: Sheet | undefined;
+  columns: IExcelColumn[] | undefined;
+  currentRow = 0;
+  currentCol = 0;
   defaultTheadCellStyle: IStyle = {
     background: 'FF88c849',
     color: 'FF333333',
@@ -37,7 +38,7 @@ export class Excel {
     wrapText: true,
     fontSize: 12,
   };
-  columns: IExcelColumn[] | undefined;
+  rowHeight = 1;
   constructor() {
     this.file = new File();
   }
@@ -47,56 +48,88 @@ export class Excel {
    */
   addSheet(name: string) {
     if (!this.file) return this;
+    this.currentRow = 0;
+    this.currentCol = 0;
     this.sheet = this.file.addSheet(name);
+    return this;
+  }
+  /**
+   * 添加一行
+   * @returns
+   */
+  addRow() {
+    if (!this.sheet) {
+      throw new Error('please use addSheet before this');
+    };
+    this.currentRow++;
+    return this.sheet.row(this.sheet.maxRow);
+  }
+  /**
+   * 添加一列
+   * @returns
+   */
+  addCol() {
+    if (!this.sheet) {
+      throw new Error('please use addSheet before this');
+    };
+    this.currentCol++;
+    return this.sheet.col(this.sheet.maxCol);
+  }
+  /**
+   * 设置行高
+   * @param value number
+   * @param unit 单位 'cm' | 'px'，默认为px
+   */
+  setRowHeight(value: number, unit: 'cm' | 'px' = 'px') {
+    if (typeof value !== 'number') {
+      throw new Error('value must be a number');
+    }
+    let v = value;
+    if (unit === 'px') {
+      v = px2cm(v);
+    }
+    this.rowHeight = v;
     return this;
   }
   /**
    * 添加表格配置
    * @param columns antd table columns
-   * @param rowHeight 行高(单位: CM)
+   * @param direction 'h' | 'v' 添加的方向，适用于追加表
    */
-  addColumns(columns: IExcelColumn[], rowHeight = 1) {
-    if (!this.sheet) return this;
-    this.columns = columns;
-    drawTheadSkeleton(this.sheet, columns);
-    const { depth } = drawTheadCell(this.sheet);
-    handleColumns(columns, depth);
-    fillAndDrawThead(this.sheet, columns, this.defaultTheadCellStyle);
-    // 处理行高
-    const { rows } = this.sheet;
-    for (let row of rows) {
-      row.setHeightCM(rowHeight);
-      // 如果需要设置边框颜色，需要对所有单元格进行设置，fillAndDrawThead会忽略掉合并项的设置
-      if (
-        this.defaultTheadCellStyle?.border &&
-        this.defaultTheadCellStyle?.borderColor
-      ) {
-        const cells = row.cells;
-        for (let cell of cells) {
-          setStyle(cell, {
-            border: true,
-            borderColor: this.defaultTheadCellStyle.borderColor,
-          });
-        }
-      }
+  addColumns(columns: IExcelColumn[]) {
+    if (!this.sheet) {
+      throw new Error('please use addSheet before this')
     }
+    debugger
+    let x = this.currentCol;
+    let y = this.sheet.maxRow;
+
+    const maxDepth = getColumnsMaxDepth(columns);
+    const maxLength = getColumnsMaxLength(columns);
+    const flatedColumns = flatColumns(columns);
+    addRow(this, this.currentRow, maxDepth, this.rowHeight);
+    addCol(this, this.currentCol, maxLength, flatedColumns);
+
+    renderThead(this, columns, this.defaultTheadCellStyle, y + maxDepth, x, y);
+    this.columns = columns;
+    this.currentCol -= maxLength;
     return this;
   }
   /**
    * 添加数据
    * @param dataSource 数据
    * @param config 表格体配置
-   * @param rowHeight 行高(单位: CM)
    */
-  addDataSource(dataSource: any[], config: ITbodyConfig = {}, rowHeight = 1) {
-    if (!this.sheet || !this.columns) return this;
-    const allColumns = getColumns(this.columns);
-    fillAndDrawTbody(
-      this.sheet,
+  addDataSource(dataSource: any[], config: ITbodyConfig = {}) {
+    if (!this.sheet || !this.columns) {
+      throw new Error('please use addSheet and addColumns before this')
+    };
+
+    const flatedColumns = flatColumns(this.columns);
+    renderTbody(
+      this,
       dataSource,
-      allColumns,
-      this.defaultTbodyCellStyle,
-      rowHeight,
+      flatedColumns,
       config,
     );
     return this;
@@ -143,3 +176,5 @@ export class Excel {
     }
   }
 }
+
+export type TExcel = InstanceType<typeof Excel>

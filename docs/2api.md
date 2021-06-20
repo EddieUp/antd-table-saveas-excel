@@ -18,25 +18,21 @@ excel.addSheet('测试工作表');
 添加表头
 
 - 集成`antd table columns`的属性，并进行 [扩展](/3types#iexcelcolumn)
-- 行高(可选，单位 CM)
 
 ```js
 import { Excel } from 'antd-table-saveas-excel';
 const excel = new Excel();
 
-excel.addColumns(
-  [
-    {
-      title: 'name',
-      dataIndex: 'name',
-    },
-    {
-      title: 'age',
-      dataIndex: 'age',
-    },
-  ],
-  1,
-);
+excel.addSheet('测试工作表').addColumns([
+  {
+    title: 'name',
+    dataIndex: 'name',
+  },
+  {
+    title: 'age',
+    dataIndex: 'age',
+  },
+]);
 ```
 
 ### addDataSource
@@ -45,22 +41,47 @@ excel.addColumns(
 
 - 数据
 - [表格体配置(可选)](/3types#itbodyconfig)
-- 行高(可选，单位 CM)
 
 ```js
 import { Excel } from 'antd-table-saveas-excel';
 const excel = new Excel();
 
-excel.addDataSource([
-  {
-    name: '张三',
-    age: '18',
-  },
-  {
-    title: '李四',
-    age: '20',
-  },
-]);
+excel
+  .addSheet('测试工作表')
+  .addColumns([
+    {
+      title: 'name',
+      dataIndex: 'name',
+    },
+    {
+      title: 'age',
+      dataIndex: 'age',
+    },
+  ])
+  .addDataSource([
+    {
+      name: '张三',
+      age: '18',
+    },
+    {
+      title: '李四',
+      age: '20',
+    },
+  ]);
+```
+
+### setRowHeight
+
+设置行高
+
+- 数值
+- 单位：'cm' | 'px'，默认为 px
+
+```js
+import { Excel } from 'antd-table-saveas-excel';
+const excel = new Excel();
+
+excel.setRowHeight(100);
 ```
 
 ### setTHeadStyle
@@ -108,6 +129,30 @@ import { Excel } from 'antd-table-saveas-excel';
 const excel = new Excel();
 
 excel.saveAs('测试.xlsx', 'blob', true);
+```
+
+### addRow
+
+添加一行空行，通常用于添加额外表的时候，用来间隔，<u>需要注意的是：该方法不返回 excel 实例对象</u>
+
+```js
+import { Excel } from 'antd-table-saveas-excel';
+const excel = new Excel();
+
+excel.addSheet('测试工作表');
+excel.addRow();
+```
+
+### addCol
+
+添加一行空列，通常用于添加额外表的时候，用来间隔，<u>需要注意的是：该方法不返回 excel 实例对象</u>
+
+```js
+import { Excel } from 'antd-table-saveas-excel';
+const excel = new Excel();
+
+excel.addSheet('测试工作表');
+excel.addCol();
 ```
 
 ### 完整示例

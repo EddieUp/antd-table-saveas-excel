@@ -1,22 +1,14 @@
 import { Cell } from 'better-xlsx';
 import setStyle from './style';
 import {
-  IStyle,
-  IExcelColumn,
   ITbodyConfig,
   ICellProps,
-  IDataSource,
-  IHorizontal,
-  IVertical,
-  ICellType,
-  INumFmt,
 } from '../../app';
 
 function drawCell(
   cell: Cell,
   props: ICellProps,
   config: ITbodyConfig = {},
-  isThead: boolean = false,
 ) {
   const {
     value,
@@ -27,7 +19,7 @@ function drawCell(
     cellType,
     style = {},
   } = props;
-  const { str2num } = config;
+  const { str2num, str2Percent } = config;
   // 尝试将值转化为数字
   if (str2num) {
     const num = Number(value);
@@ -47,9 +39,9 @@ function drawCell(
   } else {
     cell.value = value;
   }
-  if (String(value).endsWith('%')) {
+  if (str2Percent && String(value).endsWith('%')) {
     // 可以转化为百分比的话进行设置
-    const num = parseFloat(String(value));
+    const num = Number(String(value));
     if (!isNaN(num)) {
       cell.value = Number(num) / 100;
       cell.numFmt = percentToNumFmt(num);
@@ -76,10 +68,6 @@ function drawCell(
   // 合并
   cell.hMerge = hMerge;
   cell.vMerge = vMerge;
-  // 横向合并的单元格，将内容居中
-  if (hMerge && isThead) {
-    style.h = 'center';
-  }
   if (vMerge) {
     style.v = 'center';
   }

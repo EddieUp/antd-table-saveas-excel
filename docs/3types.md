@@ -2,43 +2,62 @@
 
 ### IExcelColumn
 
+继承`antd table columns`的接口，同时添加了额外属性
+
 ```ts
 interface IExcelColumn extends ColumnProps {
-  excelRender?: (
-    text: any,
-    record: any,
-    index: number,
-  ) => React.ReactNode | object;
+  // 当title为一个函数的时候，使用该参数来指定
+  __excelTitle__?: string;
+  // 优先级更高的单元格渲染，需要行列合并的话和render一样返回一个对象即可
+  excelRender?: (text: any, record: any, index: number) => string | object;
+  // 列的样式
   __style__?: IStyle;
+  // 显示格式
   __numFmt__?: INumFmt;
+  // 单元格类型
   __cellType__?: ICellType;
 }
 ```
 
 ### ICellProps
 
+单元格的配置属性
+
 ```ts
 interface ICellProps {
+  // 单元格内容
   value: string;
+  // 横向合并
   hMerge?: number;
+  // 纵向合并
   vMerge?: number;
+  // 单元格类型
   cellType?: ICellType;
+  // 显示格式
   numFmt?: INumFmt;
+  // 当单元格类型为公式的时候，填写该单元格
   formula?: string;
+  // 单元格样式
   style?: IStyle;
 }
 ```
 
 ### ITbodyConfig
 
+在绘制表体的时候，添加的额外的配置，通常用来做一些转换
+
 ```ts
 interface ITbodyConfig {
-  // 字符串能转化成数字就转化成数字
+  // 字符串能转化成数字就转化成数字，方便excel的二次处理
   str2num?: boolean;
+  // 内容结尾为%符号的是否自动转换为对应百分比格式
+  str2Percent?: boolean;
 }
 ```
 
 ### IStyle
+
+单元格样式
 
 ```ts
 type IStyle = {

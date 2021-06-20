@@ -2,7 +2,9 @@
 
 在`Antd Table Columns ColumnProps`的类型上，增加了如下属性:
 
-- excelRender: 自定义的 render，优先级比`render`高。支持返回\_\_style\_\_样式属性来自定义单元格样式
+- \_\_excelTitle\_\_: 列名，当 title 为一个函数的时候，使用该参数来指定
+
+- excelRender: 优先级比`render`高，支持返回\_\_style\_\_样式属性来自定义单元格样式，同样如果需要合并行列，返回 props(同 render 返回的格式)即可
 
 - \_\_style\_\_: [列样式](/3types#istyle)
 
@@ -11,8 +13,6 @@
 - \_\_cellType\_\_: [列单元格类型](/3types#icelltype)
 
 示例:
-
-再`columns`的配置中使用到了上面的属性，可以看实际效果
 
 ```tsx
 import React from 'react';
@@ -50,9 +50,20 @@ const columns = [
     dataIndex: 'age',
     key: 'age',
     __numFmt__: '0.00',
-    render: value => {
+    render: (value, row, index) => {
+      if (index === 1) {
+        return {
+          children: value,
+          props: {
+            rowSpan: 0,
+          },
+        };
+      }
       return {
         children: value,
+        props: {
+          rowSpan: 2,
+        },
         __style__: {
           color: 'FF88c849',
           bold: true,

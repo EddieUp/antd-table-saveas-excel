@@ -1,6 +1,7 @@
+
 // 表格列属性
 export interface IExcelColumn {
-  title: string;
+  title: any;
   dataIndex: string | string[];
   width?: number;
   children?: IExcelColumn[];
@@ -11,14 +12,11 @@ export interface IExcelColumn {
     text: any,
     record: any,
     index: number,
-  ) => React.ReactNode | object;
+  ) => string | object;
   __style__?: IStyle;
   __numFmt__?: INumFmt;
   __cellType__?: ICellType;
-  // 自动生成的私有属性，不要传入
-  __hMerge__?: number;
-  __vMerge__?: number;
-  __x__?: number;
+  __excelTitle__?: string;
 }
 // 单元格属性
 export interface ICellProps {
@@ -33,11 +31,8 @@ export interface ICellProps {
 export interface ITbodyConfig {
   // 字符串能转化成数字就转化成数字
   str2num?: boolean;
-  // 还是放在列配置里比较好
-  // 数值精度
-  // precision?: number;
-  // 是否转化成百分比
-  // toPercent?: boolean;
+  // 内容结尾为%符号的是否自动转换为对应百分比格式
+  str2Percent?: boolean;
 }
 export interface IDataSource extends Object {
   __style__?: IStyle;
