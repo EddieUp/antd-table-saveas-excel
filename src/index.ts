@@ -17,6 +17,7 @@ import {
   flatColumns
 } from './utils/columns';
 import px2cm from './utils/px2cm';
+import drawCell from './utils/cell'
 
 export class Excel {
   file: File;
@@ -75,6 +76,21 @@ export class Excel {
     this.currentCol++;
     return this.sheet.col(this.sheet.maxCol);
   }
+  drawCell(x: number, y: number, props: ICellProps) {
+    if (!this.sheet) {
+      throw new Error('please use addSheet before this');
+    };
+    const vMerge = props?.vMerge || 0;
+    const rows = vMerge + 1;
+    if (this.currentRow < y + rows) {
+      for (let i = 0; i < rows; i++) {
+        this.addRow()
+      }
+    }
+    const cell = this.sheet.cell(y, x);
+    drawCell(cell, props)
+    return this;
+  }
   /**
    * 设置行高
    * @param value number
@@ -100,7 +116,6 @@ export class Excel {
     if (!this.sheet) {
       throw new Error('please use addSheet before this')
     }
-    debugger
     let x = this.currentCol;
     let y = this.sheet.maxRow;
 

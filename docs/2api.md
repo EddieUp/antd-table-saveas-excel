@@ -155,6 +155,33 @@ excel.addSheet('测试工作表');
 excel.addCol();
 ```
 
+### drawCell
+
+绘制单元格，当前的 y 可以通过`excel.currentRow`获取
+
+| 参数说明  | 类型                             | 默认值 |
+| --------- | -------------------------------- | ------ |
+| x(第几列) | number                           | --     |
+| y(第几行) | number                           | --     |
+| props     | [ICellProps](/3types#ICellProps) | --     |
+
+```js
+import { Excel } from 'antd-table-saveas-excel';
+const excel = new Excel();
+
+excel.addSheet('test');
+excel.drawCell(0, 0, {
+  hMerge: 2,
+  vMerge: 2,
+  value: 'drawCell value',
+  style: {
+    bold: true,
+    v: 'center',
+    h: 'center',
+  },
+});
+```
+
 ### 完整示例
 
 ```tsx

@@ -700,7 +700,7 @@ export default () => {
 };
 ```
 
-### 单个 sheet 混合渲染
+### 自定义单元格渲染
 
 示例:
 
@@ -721,21 +721,6 @@ const dataSource = [
     name: '胡彦祖',
     age: 42,
     date: '1990-10-07',
-  },
-];
-
-const columns0 = [
-  {
-    title: '自定义头',
-    render: (value, row, index) => {
-      return {
-        children: value,
-        props: {
-          rowSpan: 3,
-          colSpan: 3,
-        },
-      };
-    },
   },
 ];
 
@@ -817,9 +802,32 @@ export default () => {
         }}
         onClick={() => {
           const excel = new Excel();
+          excel.addSheet('test');
           excel
-            .addSheet('test')
-            .addColumns(columns0)
+            .drawCell(0, 0, {
+              hMerge: 2,
+              vMerge: 2,
+              value: 'drawCell value',
+              style: {
+                bold: true,
+                v: 'center',
+                h: 'center',
+              },
+            })
+            .addColumns(columns)
+            .addDataSource(dataSource);
+          excel.drawCell(0, excel.currentRow, {
+            hMerge: 2,
+            vMerge: 2,
+            value: 'drawCell value',
+            style: {
+              bold: true,
+              v: 'center',
+              h: 'center',
+            },
+          });
+
+          excel
             .addColumns(columns)
             .addDataSource(dataSource)
             .saveAs('测试.xlsx');
