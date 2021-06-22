@@ -41,7 +41,7 @@ function drawCell(
   }
   if (str2Percent && String(value).endsWith('%')) {
     // 可以转化为百分比的话进行设置
-    const num = Number(String(value));
+    const num = Number(String(value).slice(0, -1));
     if (!isNaN(num)) {
       cell.value = Number(num) / 100;
       cell.numFmt = percentToNumFmt(num);
