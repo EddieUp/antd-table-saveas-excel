@@ -12,6 +12,7 @@ import {
 import { addRow } from './utils/row';
 import { addCol } from './utils/col';
 import {
+  columnsFilter,
   getColumnsMaxDepth,
   getColumnsMaxLength,
   flatColumns
@@ -118,15 +119,15 @@ export class Excel {
     }
     let x = this.currentCol;
     let y = this.sheet.maxRow;
-
-    const maxDepth = getColumnsMaxDepth(columns);
-    const maxLength = getColumnsMaxLength(columns);
-    const flatedColumns = flatColumns(columns);
+    const filteredColumns = columnsFilter(columns);
+    const maxDepth = getColumnsMaxDepth(filteredColumns);
+    const maxLength = getColumnsMaxLength(filteredColumns);
+    const flatedColumns = flatColumns(filteredColumns);
     addRow(this, this.currentRow, maxDepth, this.rowHeight);
     addCol(this, this.currentCol, maxLength, flatedColumns);
 
-    renderThead(this, columns, this.defaultTheadCellStyle, y + maxDepth, x, y);
-    this.columns = columns;
+    renderThead(this, filteredColumns, this.defaultTheadCellStyle, y + maxDepth, x, y);
+    this.columns = filteredColumns;
     this.currentCol -= maxLength;
     return this;
   }

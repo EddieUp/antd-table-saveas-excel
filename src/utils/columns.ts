@@ -10,6 +10,16 @@ import {
 //   children: ITreeNode[] | null;
 // }
 
+export function columnsFilter(columns: IExcelColumn[]): IExcelColumn[] {
+  return columns.filter(col => {
+    if (col.__ignore__) return false;
+    if (col.children) {
+      col.children = columnsFilter(col.children)
+    }
+    return true;
+  })
+}
+
 export function getColumnsMaxDepth(columns: IExcelColumn[], depth = 1) {
   const maxs = columns.map(col => getColumnDepth(col, depth))
   return Math.max.apply(Math, maxs)
