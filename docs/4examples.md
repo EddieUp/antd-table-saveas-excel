@@ -38,7 +38,7 @@ const columns = [
   },
   {
     title: '1Age%',
-    dataIndex: 'age',
+    dataIndex: ['age', 'a'],
     render: renderContent,
   },
   {
@@ -80,7 +80,9 @@ const data = [
   {
     key: '1',
     name: 'John Brown',
-    age: 32,
+    age: {
+      a: 32,
+    },
     tel: '0571-22098909',
     phone: 18889898989,
     address: 'New York No. 1 Lake Park',
@@ -90,13 +92,17 @@ const data = [
     name: 'Jim Green',
     tel: '0571-22098333',
     phone: 18889898888,
-    age: 42,
+    age: {
+      a: 42,
+    },
     address: 'London No. 1 Lake Park',
   },
   {
     key: '3',
     name: 'Joe Black',
-    age: 32,
+    age: {
+      a: 32,
+    },
     tel: '0575-22098909',
     phone: 18900010002,
     address: 'Sidney No. 1 Lake Park',
@@ -104,7 +110,9 @@ const data = [
   {
     key: '4',
     name: 'Jim Red',
-    age: 18,
+    age: {
+      a: 32,
+    },
     tel: '0575-22098909',
     phone: 18900010002,
     address: 'London No. 2 Lake Park',
@@ -112,7 +120,9 @@ const data = [
   {
     key: '5',
     name: 'Jake White',
-    age: 18,
+    age: {
+      a: 32,
+    },
     tel: '0575-22098909',
     phone: 18900010002,
     address: 'Dublin No. 2 Lake Park',
@@ -836,6 +846,168 @@ export default () => {
         下载
       </Button>
       <Table bordered columns={columns} dataSource={dataSource} />
+    </div>
+  );
+};
+```
+
+### 过滤列
+
+过滤列 age 列、Door No.列、 company 列, 示例:
+
+```tsx
+import React from 'react';
+import { Table, Button } from 'antd';
+import { Excel } from 'antd-table-saveas-excel';
+
+const columns = [
+  {
+    title: 'Name',
+    dataIndex: 'name',
+    key: 'name',
+    width: 100,
+    fixed: 'left',
+    filters: [
+      {
+        text: 'Joe',
+        value: 'Joe',
+      },
+      {
+        text: 'John',
+        value: 'John',
+      },
+    ],
+    onFilter: (value, record) => record.name.indexOf(value) === 0,
+  },
+  {
+    title: 'Other',
+    children: [
+      {
+        title: 'Age',
+        dataIndex: 'age',
+        key: 'age',
+        width: 150,
+        sorter: (a, b) => a.age - b.age,
+        __ignore__: true,
+      },
+      {
+        title: 'Address',
+        children: [
+          {
+            title: 'Street',
+            dataIndex: 'street',
+            key: 'street',
+            width: 150,
+          },
+          {
+            title: 'Block',
+            children: [
+              {
+                title: 'Building',
+                dataIndex: 'building',
+                key: 'building',
+                width: 100,
+              },
+              {
+                title: 'Door No.',
+                dataIndex: 'number',
+                key: 'number',
+                width: 100,
+                __ignore__: true,
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+  {
+    title: 'Company',
+    children: [
+      {
+        title: 'Company Address',
+        dataIndex: 'companyAddress',
+        key: 'companyAddress',
+        width: 200,
+      },
+      {
+        title: 'Company Name',
+        dataIndex: 'companyName',
+        key: 'companyName',
+      },
+    ],
+    __ignore__: true,
+  },
+  {
+    title: 'Gender',
+    dataIndex: 'gender',
+    key: 'gender',
+    width: 80,
+    fixed: 'right',
+  },
+];
+
+const data = [];
+for (let i = 0; i < 100; i++) {
+  data.push({
+    key: i,
+    name: 'John Brown',
+    age: i + 1,
+    street: 'Lake Park',
+    building: 'C',
+    number: 2035,
+    companyAddress: 'Lake Street 42',
+    companyName: 'SoftLake Co',
+    gender: 'M',
+  });
+}
+
+export default () => {
+  return (
+    <div>
+      <Button
+        style={{
+          marginBottom: 20,
+          marginRight: 20,
+        }}
+        onClick={() => {
+          const excel = new Excel();
+          excel
+            .addSheet('test')
+            .addColumns(columns)
+            .addDataSource(data)
+            .addColumns(columns)
+            .addDataSource(data)
+            .saveAs('测试.xlsx');
+        }}
+      >
+        下载
+      </Button>
+      <Button
+        style={{
+          marginBottom: 20,
+        }}
+        onClick={() => {
+          const excel = new Excel();
+          excel.addSheet('test');
+          excel.addRow();
+          excel.addRow();
+          excel.addRow();
+          excel.addCol();
+          excel.addCol();
+          excel.addCol();
+          excel.addCol();
+          excel
+            .addColumns(columns)
+            .addDataSource(data)
+            .addColumns(columns)
+            .addDataSource(data)
+            .saveAs('测试.xlsx');
+        }}
+      >
+        下载2
+      </Button>
+      <Table bordered columns={columns} dataSource={data} />
     </div>
   );
 };

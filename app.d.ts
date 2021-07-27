@@ -17,6 +17,7 @@ export interface IExcelColumn {
   __numFmt__?: INumFmt;
   __cellType__?: ICellType;
   __excelTitle__?: string;
+  __ignore__?: boolean;
 }
 // 单元格属性
 export interface ICellProps {

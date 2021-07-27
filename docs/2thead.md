@@ -12,6 +12,8 @@
 
 - \_\_cellType\_\_: [列单元格类型](/3types#icelltype)
 
+- \_\_ignore\_\_: 过滤该列，下载的 excel 中没有该列
+
 示例:
 
 ```tsx
