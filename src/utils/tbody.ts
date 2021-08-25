@@ -33,7 +33,7 @@ export function renderTbody(
       } else if (column.render) {
         renderValue = column.render(value, data, index);
       }
-      if (renderValue) {
+      if (renderValue !== null) {
         const { children, colSpan, rowSpan, __style__ } = getColumnRenderValue(
           renderValue,
         );
