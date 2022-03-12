@@ -41,8 +41,8 @@ export function renderThead(excel: TExcel, columns: IExcelColumn[], style: ICell
         hMerge,
         vMerge,
         style: {
-          ...style,
           h: hMerge ? 'center' : 'left',
+          ...style,
         },
       }
     );
