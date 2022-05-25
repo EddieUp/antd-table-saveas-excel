@@ -11,13 +11,12 @@ import {
   INumFmt,
 } from '../../app';
 
-const isMac = /macintosh|mac os x/i.test(navigator.userAgent.toLowerCase());
-// 获取默认的字体
 function getDefaultFontName() {
-  if (isMac) {
-    return 'PingFang SC';
-  }
-  return 'Microsoft YaHei';
+  if (typeof navigator === 'undefined')
+    return 'Microsoft YaHei';
+  
+  var isMac = /macintosh|mac os x/i.test(navigator?.userAgent.toLowerCase());
+  return isMac ? 'PingFang SC' : 'Microsoft YaHei';
 }
 
 const STYLEMAP: {
