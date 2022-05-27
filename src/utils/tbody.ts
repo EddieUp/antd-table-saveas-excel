@@ -28,6 +28,8 @@ export function renderTbody(
       let vMerge = 0;
       let renderValue = null;
       let cellStyle: IStyle = {};
+      let formula
+
       if (column.excelRender) {
         renderValue = column.excelRender(value, data, index);
       } else if (column.render) {
@@ -45,10 +47,16 @@ export function renderTbody(
           row.setHeightCM(cellStyle.height);
         }
       }
+
+      if (column.__cellType__ === "TypeFormula") {
+        formula = renderValue
+      }
+
       drawCell(
         cell,
         {
           value,
+          formula,
           hMerge,
           vMerge,
           cellType: __cellType__,
