@@ -1,6 +1,6 @@
 {
   "name": "antd-table-saveas-excel",
-  "version": "2.1.5",
+  "version": "2.2.0",
   "scripts": {
     "start": "dumi dev",
     "docs:build": "dumi build",
