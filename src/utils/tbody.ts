@@ -49,7 +49,7 @@ export function renderTbody(
       }
 
       if (column.__cellType__ === "TypeFormula") {
-        formula = renderValue
+        formula = renderValue as string;
       }
 
       drawCell(
